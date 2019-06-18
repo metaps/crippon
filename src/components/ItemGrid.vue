@@ -1,7 +1,7 @@
 <template>
-    <div class="row">
+    <b-card-group deck>
         <app-item v-for="(item, index) in items">{{ item }}</app-item>
-    </div>
+    </b-card-group>
 </template>
 <script>
 import Item from './Item.vue'

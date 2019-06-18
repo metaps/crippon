@@ -12,7 +12,7 @@
       <slot></slot>
     </b-card-text>
 
-    <b-button href="#" variant="primary">Purchase</b-button>
+    <b-button href="#" variant="primary">Purchaseç</b-button>
   </b-card>
 </template>
 

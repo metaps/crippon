@@ -1,10 +1,8 @@
 <template>
   <div id="app">
-    <div class="container">
       <app-header></app-header>
       <app-menu></app-menu>
       <app-item-grid :items="items"></app-item-grid>
-    </div> 
   </div>
 </template>
 
