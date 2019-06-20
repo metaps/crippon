@@ -1,6 +1,6 @@
 <template>
-    <b-card-group deck>
-        <app-item v-for="(item, index) in items">{{ item }}</app-item>
+    <b-card-group columns>
+        <app-item v-for="(item, index) in items" :item=item></app-item>
     </b-card-group>
 </template>
 <script>
