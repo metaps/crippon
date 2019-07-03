@@ -13,8 +13,6 @@ const router = new VueRouter({
   mode:'history'
 })
 
-
-
 new Vue({
   el: '#app',
   router,

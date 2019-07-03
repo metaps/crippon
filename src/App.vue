@@ -16,10 +16,6 @@ export default {
   },
   mounted: async function(){
   },
-  computed:{
-  },
-  methods: {
-  },
   components: {
     appHeader: Header,
     appMenu: Menu

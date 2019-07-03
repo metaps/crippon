@@ -7,7 +7,6 @@
 <script>
 import ItemGrid from './ItemGrid.vue'
 import {getRandomAssets} from '../js/web3_util.js'
-import axios from 'axios'
 
 export default {
   name: 'app',
@@ -20,10 +19,6 @@ export default {
     this.items = await getRandomAssets().then(function(value){
       return value
     })
-  },
-  computed:{
-  },
-  methods: {
   },
   components: {
     appItemGrid: ItemGrid

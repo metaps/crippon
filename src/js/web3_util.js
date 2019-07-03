@@ -83,4 +83,3 @@ export async function getRandomAssets(){
     }
     return getJsonFromTokenIds(tokenids2)
 }
-

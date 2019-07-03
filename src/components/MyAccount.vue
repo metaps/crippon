@@ -7,8 +7,6 @@
 <script>
 import ItemGrid from './ItemGrid.vue'
 import {getMyAssets} from '../js/web3_util.js'
-import axios from 'axios'
-
 export default {
   name: 'app',
   data () {
@@ -18,10 +16,6 @@ export default {
   },
   mounted: async function(){
     this.items = await getMyAssets().then(function(value){return value})
-  },
-  computed:{
-  },
-  methods: {
   },
   components: {
     appItemGrid: ItemGrid
