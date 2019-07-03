@@ -12,10 +12,6 @@ import Menu from './components/Menu.vue'
 
 export default {
   name: 'app',
-  data () {
-  },
-  mounted: async function(){
-  },
   components: {
     appHeader: Header,
     appMenu: Menu
