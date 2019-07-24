@@ -1,6 +1,12 @@
 <template>
   <div id="app">
+    <b-container>
+      <b-row>
+      <b-col cols="8">
+        <p v-if="!show">Only contract deployer can create new Coupon Type.</p>
+
       <b-form v-if="show">
+
       <b-form-group
         id="input-group-1"
         label="Coupon Name:"
@@ -36,7 +42,9 @@
 
       <b-button variant="primary" v-on:click="add()">Create</b-button>
     </b-form>
-      <b-card
+      </b-col>
+      <b-col cols="4">
+      <b-card v-if="show"
       :title= "form.token_name"
       :img-src= "form.token_pictureURI"
       img-alt="Image"
@@ -45,26 +53,29 @@
     >
       <b-card-text>
         Coupon Name:  {{form.token_name}} <br>
-        Price(ETH):{{ form.token_price/1000000000000000000 }}<br>
+        Price:{{ form.token_price}} ETH<br>
       </b-card-text>
       </b-card>
 
     <b-card-group columns>
 
     </b-card-group>
-
+    </b-col>
+    </b-row>
+    </b-container>  
   </div>
 </template>
 
 <script>
-import {getDb} from '../js/firestore.js'
-import { buyCoupon, addCouponType ,getWeb3} from '../js/web3_util';
+import {setCouponType} from '../js/firestore.js'
+import { buyCoupon, addCouponType ,getWeb3, getLastCouponTypeId, isOwner} from '../js/web3_util';
 
 export default {
   name: 'app',
+  
   data () {
     return {
-      show: true,
+      show: false,
       form: {
         token_name: "",
         token_price: 0,
@@ -73,11 +84,15 @@ export default {
     }
   },
   mounted: async function(){
-
+    this.show = await isOwner()
+    console.log(await isOwner())
   },
   methods:{
-    add: function() {
-      addCouponType(this.form.token_price, this.form.token_name, this.form.token_pictureURI)
+    add: async function() {
+      let token_type_id = await getLastCouponTypeId()
+      console.log(token_type_id)
+      let fire_store_id = await setCouponType(token_type_id, this.form.token_name,this.form.token_price, this.form.token_pictureURI)
+      await addCouponType(this.form.token_price,this.form.token_name,fire_store_id)
 
     }
 

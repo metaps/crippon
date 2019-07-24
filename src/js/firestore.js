@@ -1,4 +1,6 @@
 import firebase from 'firebase' 
+import {getWeb3} from '../js/web3_util'
+const web3 = getWeb3()
 
 const config = {
     apiKey: "AIzaSyAosQ8_AIhltDbAINE0WPVYE_8ZegGKwKU",
@@ -42,7 +44,7 @@ export function setCouponType(CouponTypeId,name,price,pictureURI){
     let token_type_id_fire_store
     let data = {
         "name": name,
-        "price": price,
+        "price": web3.utils.toWei(price),
         "pictureURI": pictureURI,
         "active": true
     }

@@ -6,34 +6,46 @@
     img-top
   >
     <b-card-text>
-      Token id:  {{item.token_id}} <br>
-      name:  {{item.name}} <br>
-      price:{{ item.price }}<br>
+      <p v-if="isCoupon">Token id:  {{item.token_id}}</p>
+      <p>Coupon Code:  {{"YS-" + item.token_type_id}}</p> 
+      <p>Name:  {{item.name}}</p>
+      <p>Price: {{item.price }}ETH</p>
     </b-card-text>
 
-    <b-button href="#" variant="primary" v-on:click="buy(item)">Buy</b-button>
-    <b-button href="#" variant="primary" v-on:click="del(item)">Delete</b-button>
-    <b-button href="#" variant="primary" v-on:click="use(item)">use</b-button>
+    <b-button href="#" variant="primary" v-on:click="buy(item)" v-if="!isCoupon&!isOwner">Buy</b-button>
+    <b-button href="#" variant="primary" v-on:click="del(item)" v-if="!isCoupon&isOwner">Delete</b-button>
+    <b-button href="#" variant="primary" v-on:click="use(item)" v-if="isCoupon&!isOwner">use</b-button>
+    <b-button href="#" variant="primary" v-on:click="burn(item)" v-if="isCoupon&isOwner">burn</b-button>
   
   </b-card>
 
 </template>
 
 <script>
-  import {buyCoupon, deleteCoupon, useCoupon} from '../js/web3_util.js'
+  import {buyCoupon, deleteCouponType,burnCoupon, useCoupon, isOwner} from '../js/web3_util.js'
   export default {
-    props: ["item"],
+    props: ["item","isCoupon"],
+    data () {
+      return {
+        isOwner: false
+      }
+    },
     methods: {
       buy: function (item) {
-        buyCoupon(item.id,item.price)
+        buyCoupon(item.token_type_id,item.price)
       },
       del: function (item) {
-        deleteCoupon(item.id)
+        deleteCouponType(item.token_type_id)
       },
       use: function (item) {
         useCoupon(item.token_id)
+      },
+      burn: function (item) {
+        burnCoupon(item.token_id)
       }
-
+    },
+    mounted: async function (item){
+      this.isOwner = await isOwner()
     }
   }
 </script>
