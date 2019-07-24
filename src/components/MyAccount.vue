@@ -6,7 +6,9 @@
 
 <script>
 import ItemGrid from './ItemGrid.vue'
-import {getMyAssets} from '../js/web3_util.js'
+import {getMyAssets, buyCoupon} from '../js/web3_util.js'
+import {getDb} from '../js/firestore.js'
+
 export default {
   name: 'app',
   data () {

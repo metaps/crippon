@@ -1,31 +1,40 @@
 <template>
       <b-card
-    :title= "item.attributes.extension_name"
+    :title= "item.name"
     :img-src= "item.image"
     img-alt="Image"
     img-top
   >
     <b-card-text>
+      Token id:  {{item.token_id}} <br>
       name:  {{item.name}} <br>
-      active skill:{{ item.attributes.active_skill }}<br>
-      agi:  {{ item.attributes.agi }}<br>
-      hp: {{ item.attributes.hp }}<br>
-      int:  {{ item.attributes.int }}<br>
-      lv:  {{ item.attributes.lv }}<br>
-      phy:  {{ item.attributes.phy }}<br>
-      rarity  {{ item.attributes.rarity }}<br>
-      id:{{ item.attributes.id }}<br>
+      price:{{ item.price }}<br>
     </b-card-text>
 
-    <b-button href="#" variant="primary">Buy</b-button>
+    <b-button href="#" variant="primary" v-on:click="buy(item)">Buy</b-button>
+    <b-button href="#" variant="primary" v-on:click="del(item)">Delete</b-button>
+    <b-button href="#" variant="primary" v-on:click="use(item)">use</b-button>
   
   </b-card>
 
 </template>
 
 <script>
+  import {buyCoupon, deleteCoupon, useCoupon} from '../js/web3_util.js'
   export default {
-    props: ["item"]
+    props: ["item"],
+    methods: {
+      buy: function (item) {
+        buyCoupon(item.id,item.price)
+      },
+      del: function (item) {
+        deleteCoupon(item.id)
+      },
+      use: function (item) {
+        useCoupon(item.token_id)
+      }
+
+    }
   }
 </script>
 

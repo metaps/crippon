@@ -1,8 +1,12 @@
 import Web3 from 'web3'
 import axios from 'axios'
+import tokenABI from './tokenABI.js'
+import {getDb} from './firestore.js'
+
 
 //メタマスクのロード
-function getWeb3(){
+
+export function getWeb3(){
     let web3
     if (window.ethereum) {
         web3 = new Web3(ethereum);
@@ -28,10 +32,10 @@ function getWeb3(){
 //コントラクトのロード
 function getContract(){
     let web3 =getWeb3()
-    const tokenABI =[{"constant":true,"inputs":[{"name":"interfaceId","type":"bytes4"}],"name":"supportsInterface","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"mintingFinished","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"name","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"tokenId","type":"uint256"}],"name":"getApproved","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"}],"name":"approve","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"totalSupply","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"}],"name":"transferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"},{"name":"index","type":"uint256"}],"name":"tokenOfOwnerByIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"unpause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"}],"name":"mint","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"}],"name":"safeTransferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"account","type":"address"}],"name":"isPauser","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"index","type":"uint256"}],"name":"tokenByIndex","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"},{"name":"tokenURI","type":"string"}],"name":"mintWithTokenURI","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"paused","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"tokenId","type":"uint256"}],"name":"ownerOf","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"renouncePauser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_extensionType","type":"uint16"},{"name":"_supplyLimit","type":"uint16"}],"name":"setSupplyLimit","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"}],"name":"balanceOf","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"finishMinting","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"account","type":"address"}],"name":"addPauser","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_extensionType","type":"uint16"}],"name":"getSupplyLimit","outputs":[{"name":"","type":"uint16"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[],"name":"pause","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"symbol","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"account","type":"address"}],"name":"addMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[],"name":"renounceMinter","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":false,"inputs":[{"name":"_tokenURIPrefix","type":"string"}],"name":"setTokenURIPrefix","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"_tokenId","type":"uint256"}],"name":"isAlreadyMinted","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"to","type":"address"},{"name":"approved","type":"bool"}],"name":"setApprovalForAll","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"account","type":"address"}],"name":"isMinter","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"from","type":"address"},{"name":"to","type":"address"},{"name":"tokenId","type":"uint256"},{"name":"_data","type":"bytes"}],"name":"safeTransferFrom","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"tokenURIPrefix","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[],"name":"EXTENSION_TYPE_OFFSET","outputs":[{"name":"","type":"uint16"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"tokenId","type":"uint256"}],"name":"tokenURI","outputs":[{"name":"","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_owner","type":"address"},{"name":"_tokenId","type":"uint256"}],"name":"mintExtensionAsset","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"owner","type":"address"},{"name":"operator","type":"address"}],"name":"isApprovedForAll","outputs":[{"name":"","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[],"name":"Paused","type":"event"},{"anonymous":false,"inputs":[],"name":"Unpaused","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"account","type":"address"}],"name":"PauserAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"account","type":"address"}],"name":"PauserRemoved","type":"event"},{"anonymous":false,"inputs":[],"name":"MintingFinished","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"account","type":"address"}],"name":"MinterAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"account","type":"address"}],"name":"MinterRemoved","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"from","type":"address"},{"indexed":true,"name":"to","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"}],"name":"Transfer","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"approved","type":"address"},{"indexed":true,"name":"tokenId","type":"uint256"}],"name":"Approval","type":"event"},{"anonymous":false,"inputs":[{"indexed":true,"name":"owner","type":"address"},{"indexed":true,"name":"operator","type":"address"},{"indexed":false,"name":"approved","type":"bool"}],"name":"ApprovalForAll","type":"event"}]
     const contractHashMCHE = "0xdceaf1652a131F32a821468Dc03A92df0edd86Ea"
     const contractHashMLB = "0x8c9b261faef3b3c2e64ab5e58e04615f8c788099"
-    return web3.eth.Contract(tokenABI, contractHashMCHE)
+    const contractHashYS = "0x103c3a1a8dac658563d131054a6027f09ac48fe6"
+    return web3.eth.Contract(tokenABI, contractHashYS)
 }
 
 //tokenidからjsonを取得
@@ -44,7 +48,14 @@ function getJsonFromTokenIds(tokenids){
         contract.methods.tokenURI(tokenids[i]).call().then(function(value){
         axios
         .get(value)
-        .then(response => (output.push(response.data)))
+        .then(response => (
+            output.push({
+                "token_id": tokenids[i],
+                "name" : response.data.fields.name.stringValue,
+                "price" : response.data.fields.price.integerValue,
+                "image": response.data.fields.pictureURI.stringValue
+            })
+        ))
         })
     }
     return output
@@ -72,6 +83,15 @@ export async function getMyAssets(){
     let address = await web3.eth.getAccounts().then(function(value){return value[0]})
     return getJsonFromWalletAddress(address)
 }
+export async function getMyAddress(){
+    let web3 = getWeb3()
+    let address = await web3.eth.getAccounts().then(function(value){return value[0]})
+
+    return address
+}
+
+
+
 //index 1-10のアセットを取得
 export async function getRandomAssets(){
     let contract = getContract()
@@ -81,5 +101,95 @@ export async function getRandomAssets(){
             tokenids2.push(parseInt(value._hex,16))
         })
     }
+    console.log(tokenids2)
     return getJsonFromTokenIds(tokenids2)
+}
+
+
+
+
+export async function buyCoupon(tokenTypeId, price){
+    let address = await getMyAddress()
+    let contract = await getContract()
+    console.log({"id":tokenTypeId,"price":price})
+    contract.methods.buyCoupon(tokenTypeId).send({"from":address,"value":price})
+}
+
+
+export async function useCoupon(tokenId) {
+    let from = await getMyAddress()
+    let to = "0xAb18bFFf111BC9D120007378645ECf745cf32BB5"
+    let contract = getContract()
+    contract.methods.transferFrom(from,to,tokenId).send({"from":from})
+}
+
+
+export async function deleteCoupon(couponTypeId) {
+    let address = await getMyAddress()
+    let contract = getContract()
+    contract.methods.deleteCouponType(couponTypeId).send({"from":address})
+}
+
+export async function addCouponType(price,name,token_type_id) {
+    let baseURI = "https://firestore.googleapis.com/v1/projects/crippon-25d56/databases/(default)/documents/coupon_types/"
+    let tokenURI = baseURI + token_type_id
+    console.log(tokenURI)
+    let from = await getMyAddress()
+    let contract = getContract()
+    contract.methods.addCouponType(price,name,tokenURI).send({"from":from})
+}
+
+export async function deleteCouponType(couponTypeId) {
+    let from = await getMyAddress()
+    let contract = getContract()
+    contract.methods.deleteCouponType(couponTypeId).send({"from":from})
+}
+
+export async function getLastCouponTypeId() {
+    let contract = getContract()
+    let web3 = getWeb3()
+    let lastCouponTypeId
+    await contract.methods.totalSupplyCouponType().call().then(function(value){lastCouponTypeId = web3.utils.hexToNumber(value)})
+    console.log(lastCouponTypeId)
+    return lastCouponTypeId
+}
+
+//download all coupontypes from blockchain
+export async function AllCouponTypesEth(){
+    let web3 = getWeb3()
+    let contract = getContract()
+    let tokenTypes = []
+    let lastTokenTypeId 
+    await contract.methods.totalSupplyCouponType().call().then(function(value){lastTokenTypeId = web3.utils.hexToNumber(value)})
+    console.log({"lasttokentypeid": lastTokenTypeId})
+    for(let i=1;i<=lastTokenTypeId;i++){
+        await contract.methods.couponType(i).call().then(function(value){
+            tokenTypes.push(
+            {"id":i,
+                "price":web3.utils.hexToNumber(value[0]),
+                "name":value[1],
+                "url":value[2]
+            }
+            )
+        })
+    }
+    return tokenTypes
+}
+//download all coupontypes from Server.
+export function AllCouponTypesServer(tokentypes){
+    let output = []
+    let contract = getContract()
+    for(let i=0;i<tokentypes.length;i++){
+        axios
+        .get(tokentypes[i].url)
+        .then(response => (
+            output.push({
+                "id": i+1,
+                "name" : response.data.fields.name.stringValue,
+                "price" : tokentypes[i].price, //return price from ethereum
+                "image": response.data.fields.pictureURI.stringValue
+            })
+        ))
+    }
+    return output
 }

@@ -7,6 +7,9 @@
 <script>
 import ItemGrid from './ItemGrid.vue'
 import {getRandomAssets} from '../js/web3_util.js'
+import firebase from '../js/firestore.js'
+import {getDb} from '../js/firestore.js'
+
 
 export default {
   name: 'app',
