@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@google-cloud/storage": "^3.0.3",
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "babel-preset-es2015": "^6.24.1",
     "bootstrap-vue": "^2.0.0-rc.22",
     "firebase": "^6.3.1",
