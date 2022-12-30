@@ -16,7 +16,7 @@
     "bootstrap-vue": "^2.0.0-rc.22",
     "firebase": "^6.3.1",
     "firebase-admin": "^8.2.0",
-    "mocha": "^6.1.4",
+    "mocha": "^10.2.0",
     "openzeppelin-solidity": "^2.3.0",
     "vue": "^2.5.11",
     "vue-router": "^3.0.6",
